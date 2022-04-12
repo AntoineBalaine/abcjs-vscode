@@ -1,16 +1,24 @@
 {
     "scopeName": "source.abc",
     "patterns": [
+        { "include": "#ties" },
+        { "include": "#instructions" },
+        { "include": "#comments" },
+        { "include": "#voice" },
+        { "include": "#annotations" },
+        { "include": "#information" },
+        { "include": "#bar"},
+        { "include": "#chords" },
+        { "include": "#symbols"},
+        { "include": "#accidentalsAndOctaves" },
         { "include": "#referencenumber" },
-        { "include": "#title" },
+        { "include": "#title"},
         { "include": "#key" },
         { "include": "#meter" },
         { "include": "#length" },
         { "include": "#tempo" },
         { "include": "#composer" },
-        { "include": "#instructions" },
-        { "include": "#comments" },
-        { "include": "#voice-section" }
+        { "include": "#rhythm" }
     ],
     "repository": {
         "title": {
@@ -105,7 +113,15 @@
             "patterns": [                
                 {
                     "match": "^%%.*",
-                    "name": "keyword.other.instruction.abc"
+                    "name": "comment"
+                }
+            ]
+        },
+        "annotations": {
+            "patterns": [
+                {
+                    "match": "\"([^\".]*)\"",
+                    "name": "comment"
                 }
             ]
         },
@@ -117,25 +133,19 @@
                 }
             ]
         },
-        "voice-section": {
-            "name": "abc.section.voice",
-            "begin": "^(V:\\d)(.*)",            
-            "beginCaptures": {
-                "0": { "name": "keyword.other.region.voice.abc" }
-            },
-            "while": "(?# include lines until one contains 'V:')^(?!V:\\d|X:)",
+        "accidentalsAndOctaves": {
             "patterns": [
-                { "include": "#chords" },
-                { "include": "#words" },
-                { "include": "#bar" },
-                { "include": "#ornaments" }
+                {
+                    "match": "[\\^_=,']",
+                    "name": "string"
+                }
             ]
         },
         "chords": {
             "patterns": [                
                 {
-                    "match": "\"([^\".]*)\"",
-                    "name": "keyword.other.chords.abc"
+                        "match": "[\\[\\]]",
+                    "name": "keyword.other"
                 }
             ]
         },
@@ -162,6 +172,46 @@
                     "name": "keyword.other.ornaments.abc"
                 }
             ]
-        }        
+        },
+        "symbols": {
+            "patterns": [
+                {
+                    "match": "!([^!.]*)!",
+                    "name": "keyword.other.symbols.abc"
+                }
+            ]
+        },
+        "ties": {
+            "patterns": [
+                {
+                    "match": "\\(",
+                    "name": "string"
+                },
+                {
+                    "match": "\\)",
+                    "name": "string"
+                }
+            ]
+        },
+        "voice": {
+            "patterns": [
+                {
+                    "match": "^\\[V:.\\]",
+                    "name": "comment"
+                }
+            ]
+        },
+        "rhythm":{
+            "patterns": [
+                {
+                    "match": "[><]",
+                    "name": "string"
+                },
+                {
+                    "match": "(?!^[a-gzA-GZ]([,']?)+)[\/0-9]+",
+                    "name": "string"
+                }
+            ]
+        } 
     }
 }

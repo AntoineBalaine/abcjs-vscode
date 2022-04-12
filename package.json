@@ -21,7 +21,16 @@
   ],
   "activationEvents": [
     "onCommand:abcjs-vscode.helloWorld",
-    "onCommand:abcjs-vscode.showPreview"
+    "onCommand:abcjs-vscode.showPreview",
+    "onCommand:abcjs-vscode.consolidateConsecutiveNotes",
+    "onCommand:abcjs-vscode.convertToEnharmonia",
+    "onCommand:abcjs-vscode.convertToRest",
+    "onCommand:abcjs-vscode.divideLength",
+    "onCommand:abcjs-vscode.duplicateLength",
+    "onCommand:abcjs-vscode.transposeHalfStepDown",
+    "onCommand:abcjs-vscode.transposeHalfStepUp",
+    "onCommand:abcjs-vscode.transposeOctDown",
+    "onCommand:abcjs-vscode.transposeOctUp"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -33,6 +42,54 @@
       {
         "command": "abcjs-vscode.showPreview",
         "title": "abcjs-vscode: Show Preview"
+      },
+      {
+        "command": "abcjs-vscode.consolidateConsecutiveNotes",
+        "title": "abcjs-edit: consolidateConsecutiveNotes"
+      },
+      {
+        "command": "abcjs-vscode.convertToEnharmonia",
+        "title": "abcjs-edit: convertToEnharmonia"
+      },
+      {
+        "command": "abcjs-vscode.convertToRest",
+        "title": "abcjs-edit: convertToRest"
+      },
+      {
+        "command": "abcjs-vscode.divideLength",
+        "title": "abcjs-edit: divideLength"
+      },
+      {
+        "command": "abcjs-vscode.duplicateLength",
+        "title": "abcjs-edit: duplicateLength"
+      },
+      {
+        "command": "abcjs-vscode.transposeHalfStepDown",
+        "title": "abcjs-edit: transposeHalfStepDown"
+      },
+      {
+        "command": "abcjs-vscode.transposeHalfStepUp",
+        "title": "abcjs-edit: transposeHalfStepUp"
+      },
+      {
+        "command": "abcjs-vscode.transposeOctDown",
+        "title": "abcjs-edit: transposeOctDown"
+      },
+      {
+        "command": "abcjs-vscode.transposeOctUp",
+        "title": "abcjs-edit: transposeOctUp"
+      },
+      {
+        "command": "abcjs-vscode.transposeStepUp",
+        "title": "abcjs-edit: transposeStepUp"
+      },
+      {
+        "command": "abcjs-vscode.transposeStepDown",
+        "title": "abcjs-edit: transposeStepDown"
+      },
+      {
+        "command": "abcjs-vscode.reorderChordNotes",
+        "title": "abcjs-edit: reorderChordNotes"
       }
     ],
     "languages": [
@@ -71,6 +128,7 @@
     "typescript": "4.6.3"
   },
   "dependencies": {
+    "abc-editing-macros": "github:AntoineBalaine/abc-editing-macros",
     "vsce": "2.7.0"
   }
 }

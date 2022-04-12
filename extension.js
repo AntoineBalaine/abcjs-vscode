@@ -1,9 +1,21 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
-
+const {
+  transposeOctUp,
+  consolidateConsecutiveNotes,
+  convertToEnharmonia,
+  convertToRest,
+  divideLength,
+  duplicateLength,
+  transposeHalfStepDown,
+  transposeHalfStepUp,
+  transposeOctDown,
+  reorderChordNotes,
+  transposeStepDown,
+  transposeStepUp,
+} = require("./extensionActions");
 let panel = null;
-
 /**
  * @param {vscode.ExtensionContext} context
  */
@@ -34,10 +46,23 @@ function activate(context) {
   );
   context.subscriptions.push(viewer);
 
+  context.subscriptions.push(consolidateConsecutiveNotes);
+  context.subscriptions.push(convertToEnharmonia);
+  context.subscriptions.push(convertToRest);
+  context.subscriptions.push(divideLength);
+  context.subscriptions.push(duplicateLength);
+  context.subscriptions.push(transposeHalfStepDown);
+  context.subscriptions.push(transposeHalfStepUp);
+  context.subscriptions.push(transposeOctDown);
+  context.subscriptions.push(transposeOctUp);
+  context.subscriptions.push(transposeStepDown);
+  context.subscriptions.push(transposeStepUp);
+  context.subscriptions.push(reorderChordNotes);
+
   // Update the Preview when code changes.
   vscode.workspace.onDidChangeTextDocument((eventArgs) => {
-    console.log('changed', eventArgs);
-    updatePreview(eventArgs)
+    console.log("changed", eventArgs);
+    updatePreview(eventArgs);
   });
 }
 
@@ -47,8 +72,8 @@ function updatePreview(eventArgs) {
   // plaintext is for unsaved files.
 
   if (language !== "abc" && language !== "plaintext") {
-    console.log('language is', language)
-    return
+    console.log("language is", language);
+    return;
   }
 
   //   let html = getWebviewContent(getNormalizedEditorContent(vscode.window.activeTextEditor),
@@ -209,7 +234,7 @@ function getNormalizedEditorContent(editor) {
   let content = editor.document.getText();
 
   // escape the \
-  content = content.replaceAll('\\', '\\\\')
+  content = content.replaceAll("\\", "\\\\");
 
   if (editor.document.eol == vscode.EndOfLine.CRLF) {
     content = content.replace(/\r\n/g, "\n");
