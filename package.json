@@ -90,6 +90,10 @@
       {
         "command": "abcjs-vscode.reorderChordNotes",
         "title": "abcjs-edit: reorderChordNotes"
+      },
+      {
+        "command": "abcjs-vscode.createInstrumentsFile",
+        "title": "abcjs-edit: createInstrumentsFile"
       }
     ],
     "languages": [

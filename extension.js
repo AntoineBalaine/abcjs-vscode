@@ -14,6 +14,7 @@ const {
   reorderChordNotes,
   transposeStepDown,
   transposeStepUp,
+  createInstrumentsFile,
 } = require("./extensionActions");
 let panel = null;
 /**
@@ -58,6 +59,7 @@ function activate(context) {
   context.subscriptions.push(transposeStepDown);
   context.subscriptions.push(transposeStepUp);
   context.subscriptions.push(reorderChordNotes);
+  context.subscriptions.push(createInstrumentsFile);
 
   // Update the Preview when code changes.
   vscode.workspace.onDidChangeTextDocument((eventArgs) => {

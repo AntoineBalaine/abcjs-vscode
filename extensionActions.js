@@ -13,7 +13,13 @@ const {
   reorderChord,
   transposeStepUpTransform,
   transposeStepDownTransform,
+  separateHeaderAndBody,
+  findInstrumentCalls,
+  addNomenclatureToHeader,
+  buildBodyFromInstruments,
 } = require("abc-editing-macros");
+const fs = require("fs");
+const path = require("path");
 
 const selectionContent = () =>
   vscode.window.activeTextEditor.document.getText(
@@ -169,6 +175,44 @@ const reorderChordNotes = vscode.commands.registerCommand(
   }
 );
 
+const createInstrumentsFile = vscode.commands.registerCommand(
+  "abcjs-vscode.createInstrumentsFile",
+  async () => {
+    const currentFilePath = vscode.window.activeTextEditor.document.uri.fsPath;
+    const fileName = path.parse(currentFilePath).name;
+    const directoryPath = path.dirname(currentFilePath);
+
+    //create file's contents
+    //pass in the full document
+    //findInstrumentCalls()
+    let headerAndBody = separateHeaderAndBody(
+      vscode.window.activeTextEditor.document.getText(),
+      { pos: 0 }
+    );
+    const parsedInstrumentFamilies = findInstrumentCalls(
+      headerAndBody.bodyText,
+      { pos: 0 }
+    );
+    headerAndBody.headerText = addNomenclatureToHeader(
+      headerAndBody.headerText,
+      parsedInstrumentFamilies.map((instrument) => Object.keys(instrument)[0])
+    );
+    headerAndBody.bodyText = buildBodyFromInstruments(parsedInstrumentFamilies);
+    const newPath = path.join(
+      directoryPath,
+      `${fileName}.instrumentFamilies.abc`
+    );
+    await fs.writeFile(
+      newPath,
+      Object.values(headerAndBody).join("\n"),
+      () => {}
+    );
+
+    const newURI = vscode.Uri.parse(newPath);
+    vscode.window.showTextDocument(newURI);
+  }
+);
+
 module.exports = {
   consolidateConsecutiveNotes,
   convertToEnharmonia,
@@ -182,4 +226,5 @@ module.exports = {
   transposeStepDown,
   transposeStepUp,
   reorderChordNotes,
+  createInstrumentsFile,
 };
