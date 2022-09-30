@@ -10,8 +10,10 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}"
-			]
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--preserve-symlinks"
+			],
+			"resolveSourceMapLocations": ["**/*"]
 		},
 		{
 			"name": "Extension Tests",
@@ -20,7 +22,7 @@
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
 				"--extensionTestsPath=${workspaceFolder}/test/suite/index"
-			]
+			],    
 		}
 	]
 }
