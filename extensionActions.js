@@ -1,22 +1,21 @@
 const vscode = require("vscode");
 const {
+  consolidateConsecutiveNotesTransform,
+  consolidateRestsInRoutine,
+  convertToEnharmoniaTransform,
+  convertToRestTransform,
+  createInstrumentationRoutine,
+  divideLengthTransform,
+  duplicateLengthTransform,
+  noteDispatcher,
+  octaviateDownTransform,
+  octaviateUpTransform,
+  reorderChordTransform,
   transposeHalfStepDownTransform,
   transposeHalfStepUpTransform,
-  octaviateUpTransform,
-  divideLengthTransform,
-  convertToRestTransform,
-  octaviateDownTransform,
-  duplicateLengthTransform,
-  convertToEnharmoniaTransform,
-  consolidateConsecutiveNotesTransform,
-  dispatcher,
-  reorderChord,
-  transposeStepUpTransform,
   transposeStepDownTransform,
-  separateHeaderAndBody,
-  findInstrumentCalls,
-  addNomenclatureToHeader,
-  buildBodyFromInstruments,
+  transposeStepUpTransform,
+  formatLineSystem,
 } = require("abc-editing-macros");
 const fs = require("fs");
 const path = require("path");
@@ -36,7 +35,7 @@ const consolidateConsecutiveNotes = vscode.commands.registerCommand(
   "abcjs-vscode.consolidateConsecutiveNotes",
   () => {
     let newText = consolidateConsecutiveNotesTransform(selectionContent());
-    /*     let newText = dispatcher(
+    /*     let newText = noteDispatcher(
       selectionContent(),
       { pos: 0 },
       consolidateConsecutiveNotesTransform
@@ -58,119 +57,131 @@ const convertToEnharmonia = vscode.commands.registerCommand(
       keyArray = keyArray.filter((n) => n);
       key = keyArray.pop();
     }
-    const newText = dispatcher(selectionContent(), { pos: 0 }, (note) =>
-      key
-        ? // @ts-ignore
-          convertToEnharmoniaTransform(note, key)
-        : convertToEnharmoniaTransform(note)
-    );
+    const newText = noteDispatcher({
+      text: selectionContent(),
+      context: { pos: 0 },
+      transformFunction: (note) =>
+        key
+          ? // @ts-ignore
+            convertToEnharmoniaTransform(note, key)
+          : convertToEnharmoniaTransform(note),
+    });
     makeReplacement(newText);
   }
 );
 const convertToRest = vscode.commands.registerCommand(
   "abcjs-vscode.convertToRest",
   () => {
-    let newText = dispatcher(
-      selectionContent(),
-      { pos: 0 },
-      convertToRestTransform
-    );
+    let newText = noteDispatcher({
+      text: selectionContent(),
+      context: { pos: 0 },
+      transformFunction: convertToRestTransform,
+    });
     makeReplacement(newText);
   }
 );
 const duplicateLength = vscode.commands.registerCommand(
   "abcjs-vscode.duplicateLength",
   () => {
-    let newText = dispatcher(
-      selectionContent(),
-      { pos: 0 },
-      duplicateLengthTransform
-    );
+    let newText = noteDispatcher({
+      text: selectionContent(),
+      context: { pos: 0 },
+      transformFunction: duplicateLengthTransform,
+    });
     makeReplacement(newText);
   }
 );
 const divideLength = vscode.commands.registerCommand(
   "abcjs-vscode.divideLength",
   () => {
-    let newText = dispatcher(
-      selectionContent(),
-      { pos: 0 },
-      divideLengthTransform
-    );
+    let newText = noteDispatcher({
+      text: selectionContent(),
+      context: { pos: 0 },
+      transformFunction: divideLengthTransform,
+    });
     makeReplacement(newText);
   }
 );
 const transposeHalfStepUp = vscode.commands.registerCommand(
   "abcjs-vscode.transposeHalfStepUp",
   () => {
-    let newText = dispatcher(
-      selectionContent(),
-      { pos: 0 },
-      transposeHalfStepUpTransform
-    );
+    let newText = noteDispatcher({
+      text: selectionContent(),
+      context: { pos: 0 },
+      transformFunction: transposeHalfStepUpTransform,
+    });
     makeReplacement(newText);
   }
 );
 const transposeHalfStepDown = vscode.commands.registerCommand(
   "abcjs-vscode.transposeHalfStepDown",
   () => {
-    let newText = dispatcher(
-      selectionContent(),
-      { pos: 0 },
-      transposeHalfStepDownTransform
-    );
+    let newText = noteDispatcher({
+      text: selectionContent(),
+      context: { pos: 0 },
+      transformFunction: transposeHalfStepDownTransform,
+    });
     makeReplacement(newText);
   }
 );
 const transposeOctDown = vscode.commands.registerCommand(
   "abcjs-vscode.transposeOctDown",
   () => {
-    let newText = dispatcher(
-      selectionContent(),
-      { pos: 0 },
-      octaviateDownTransform
-    );
+    let newText = noteDispatcher({
+      text: selectionContent(),
+      context: { pos: 0 },
+      transformFunction: octaviateDownTransform,
+    });
     makeReplacement(newText);
   }
 );
 const transposeStepUp = vscode.commands.registerCommand(
   "abcjs-vscode.transposeStepUp",
   () => {
-    let newText = dispatcher(
-      selectionContent(),
-      { pos: 0 },
-      transposeStepUpTransform
-    );
+    let newText = noteDispatcher({
+      text: selectionContent(),
+      context: { pos: 0 },
+      transformFunction: transposeStepUpTransform,
+    });
+    makeReplacement(newText);
+  }
+);
+
+const scoreFormatter = vscode.commands.registerCommand(
+  "abcjs-vscode.scoreFormatter",
+  () => {
+    const text = selectionContent();
+    const newText = formatLineSystem(0, text.length, text);
     makeReplacement(newText);
   }
 );
 const transposeStepDown = vscode.commands.registerCommand(
   "abcjs-vscode.transposeStepDown",
   () => {
-    let newText = dispatcher(
-      selectionContent(),
-      { pos: 0 },
-      transposeStepDownTransform
-    );
+    let newText = noteDispatcher({
+      text: selectionContent(),
+      context: { pos: 0 },
+      transformFunction: transposeStepDownTransform,
+    });
     makeReplacement(newText);
   }
 );
 const transposeOctUp = vscode.commands.registerCommand(
   "abcjs-vscode.transposeOctUp",
   () => {
-    let newText = dispatcher(
-      selectionContent(),
-      { pos: 0 },
-      octaviateUpTransform
-    );
+    let newText = noteDispatcher({
+      text: selectionContent(),
+      context: { pos: 0 },
+      transformFunction: octaviateUpTransform,
+    });
     makeReplacement(newText);
   }
 );
 const reorderChordNotes = vscode.commands.registerCommand(
-  "abcjs-vscode.reorderChordNotes",
+  "abcjs-vscode.reorderChordTransformNotes",
   () => {
     // @ts-ignore
-    let newText = reorderChord(selectionContent());
+    let newText = reorderChordTransform(selectionContent());
     makeReplacement(newText);
   }
 );
@@ -178,35 +189,17 @@ const reorderChordNotes = vscode.commands.registerCommand(
 const createInstrumentsFile = vscode.commands.registerCommand(
   "abcjs-vscode.createInstrumentsFile",
   async () => {
+    const documentText = vscode.window.activeTextEditor.document.getText();
+    const instrumentationRoutine = createInstrumentationRoutine(documentText);
     const currentFilePath = vscode.window.activeTextEditor.document.uri.fsPath;
     const fileName = path.parse(currentFilePath).name;
     const directoryPath = path.dirname(currentFilePath);
 
-    //create file's contents
-    //pass in the full document
-    //findInstrumentCalls()
-    let headerAndBody = separateHeaderAndBody(
-      vscode.window.activeTextEditor.document.getText(),
-      { pos: 0 }
-    );
-    const parsedInstrumentFamilies = findInstrumentCalls(
-      headerAndBody.bodyText,
-      { pos: 0 }
-    );
-    headerAndBody.headerText = addNomenclatureToHeader(
-      headerAndBody.headerText,
-      parsedInstrumentFamilies.map((instrument) => Object.keys(instrument)[0])
-    );
-    headerAndBody.bodyText = buildBodyFromInstruments(parsedInstrumentFamilies);
     const newPath = path.join(
       directoryPath,
       `${fileName}.instrumentFamilies.abc`
     );
-    await fs.writeFile(
-      newPath,
-      Object.values(headerAndBody).join("\n"),
-      () => {}
-    );
+    await fs.writeFile(newPath, instrumentationRoutine, () => {});
 
     const newURI = vscode.Uri.parse(newPath);
     vscode.window.showTextDocument(newURI);
@@ -227,4 +220,5 @@ module.exports = {
   transposeStepUp,
   reorderChordNotes,
   createInstrumentsFile,
+  scoreFormatter,
 };
