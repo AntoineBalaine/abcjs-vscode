@@ -49,12 +49,21 @@ The line-endings in the file need to be set to LF instead of CRLF (on Windows). 
 
 ## Release Notes
 
-See [[CHANGELOG.org]].
+See [CHANGELOG.org](CHANGELOG.org).
 
 --------------------------------------------------------------------------------------------------
 
+# Development
 
-## References
+The package manager is npm.
+
+## Publishing
+
+`npm run publish`
+
+- [Bundling](https://code.visualstudio.com/api/working-with-extensions/bundling-extension)
+
+# References
 
 - https://github.com/softawaregmbh/vscode-abc/
 
@@ -72,7 +81,7 @@ Documentation:
 - [Publishing](https://code.visualstudio.com/api/working-with-extensions/publishing-extension)
 
 vsce publish
-Use a local version with ~yarn vsce publish~.
-
-Switched to npm as a package manager.
+Use a local version with
+npm run publish
+~yarn vsce publish~.
 -->
