@@ -1,10 +1,10 @@
 # abcjs-vscode
 
-This is an editor for the ABC music notation, utilizing [abcjs](https://abcjs.net/) library.
+This is an editor for the ABC music notation, powered by the [abcjs](https://abcjs.net/) library.
 
-ABC notation is the "Markdown for music". Learn more at https://abcnotation.com/.
+It is an extension for Visual Studio Code and is available at [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=alensiljak.abcjs-vscode) or through the Extensions panel in VS Code.
 
-Available at [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=alensiljak.abcjs-vscode) or through the Extensions panel in VS Code.
+ABC notation - 🔤 - is known as the "Markdown for music". Learn more at the ABC Notation [homepage](https://abcnotation.com/).
 
 ## Features
 
@@ -19,10 +19,29 @@ And a bit more elaborate:
 
 ![Screenshot 2](https://imgur.com/HMILUbe.png)
 
+### Print Preview
+
+This command will display a print-ready sheet in a browser. There you can print it to PDF or paper.
+
+![Print Preview](https://imgur.com/4enTxxd.png)
+
+### Export
+
+The Export command will export an HTML page with the rendered score sheet.
+
+The Export SVG command will export the score sheet as SVG.
+
 ## Usage
 
-The only action available currently is "abcjs-vscode: Show Preview".
-Press Ctrl+Shift+P and type "abcjs" to access it.
+Press Ctrl+Shift+P and type "abcjs" to access the available commands.
+
+Available commands: 
+- `abcjs-vscode: Show Preview`
+- `abcjs-vscode: Print Preview`
+- `abcjs-vscode: Export Sheet to HTML`
+- `abcjs-vscode: Export Sheet as SVG`
+
+The Viewer works both with new text files in the editor and existing `.abc` files.
 
 ## Requirements
 
@@ -30,7 +49,7 @@ The abcjs library is currently loaded from CDN and not packaged with the extensi
 
 ## Extension Settings
 
-There are currently no settings for the extension. It works on blank new files and existing .abc files.
+In VSCode Settings, look for `abcjs vscode` configuration section. Editing the settings will apply them immediately to the Viewer. For convenience, you can arrange the window layout and keep the Settings window open in order to apply the settings to the current sheet preview.
 
 <!--
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
@@ -59,9 +78,15 @@ The package manager is npm.
 
 ## Publishing
 
-`npm run publish`
+`npm run deploy`
 
 - [Bundling](https://code.visualstudio.com/api/working-with-extensions/bundling-extension)
+
+Note that the vscode engine version must start with a cared (^), otherwise it gets rejected by vscode on installation most of the time.
+
+# License
+
+See [license](LICENSE).
 
 # References
 

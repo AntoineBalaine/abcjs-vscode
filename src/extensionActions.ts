@@ -1,5 +1,5 @@
 const vscode = require("vscode");
-const {
+import {
   consolidateConsecutiveNotesTransform,
   consolidateRestsInRoutine,
   convertToEnharmoniaTransform,
@@ -16,7 +16,7 @@ const {
   transposeStepDownTransform,
   transposeStepUpTransform,
   formatLineSystem,
-} = require("abc-editing-macros");
+} from "abc-editing-macros";
 const fs = require("fs");
 const path = require("path");
 
@@ -25,13 +25,13 @@ const selectionContent = () =>
     vscode.window.activeTextEditor.selection
   );
 
-const makeReplacement = (newText) => {
-  vscode.window.activeTextEditor.edit((editBuilder) => {
+const makeReplacement = (newText: string) => {
+  vscode.window.activeTextEditor.edit((editBuilder: any) => {
     editBuilder.replace(vscode.window.activeTextEditor.selection, newText);
   });
 };
 
-const consolidateConsecutiveNotes = vscode.commands.registerCommand(
+export const consolidateConsecutiveNotes = vscode.commands.registerCommand(
   "abcjs-vscode.consolidateConsecutiveNotes",
   () => {
     let newText = consolidateConsecutiveNotesTransform(selectionContent());
@@ -43,7 +43,7 @@ const consolidateConsecutiveNotes = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const convertToEnharmonia = vscode.commands.registerCommand(
+export const convertToEnharmonia = vscode.commands.registerCommand(
   "abcjs-vscode.convertToEnharmonia",
   () => {
     const matcher = /(^K:\s?[A-Z][b#]?)|(\[K:\s?[A-Z][b#]?[a-z]+?\])/;
@@ -52,9 +52,9 @@ const convertToEnharmonia = vscode.commands.registerCommand(
       .getText()
       .substring(0, position);
     let keyArray = text.match(matcher);
-    let key;
+    let key: any;
     if (keyArray && keyArray.length > 0) {
-      keyArray = keyArray.filter((n) => n);
+      keyArray = keyArray.filter((n: any) => n);
       key = keyArray.pop();
     }
     const newText = noteDispatcher({
@@ -69,7 +69,7 @@ const convertToEnharmonia = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const convertToRest = vscode.commands.registerCommand(
+export const convertToRest = vscode.commands.registerCommand(
   "abcjs-vscode.convertToRest",
   () => {
     let newText = noteDispatcher({
@@ -80,7 +80,7 @@ const convertToRest = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const duplicateLength = vscode.commands.registerCommand(
+export const duplicateLength = vscode.commands.registerCommand(
   "abcjs-vscode.duplicateLength",
   () => {
     let newText = noteDispatcher({
@@ -91,7 +91,7 @@ const duplicateLength = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const divideLength = vscode.commands.registerCommand(
+export const divideLength = vscode.commands.registerCommand(
   "abcjs-vscode.divideLength",
   () => {
     let newText = noteDispatcher({
@@ -102,7 +102,7 @@ const divideLength = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const transposeHalfStepUp = vscode.commands.registerCommand(
+export const transposeHalfStepUp = vscode.commands.registerCommand(
   "abcjs-vscode.transposeHalfStepUp",
   () => {
     let newText = noteDispatcher({
@@ -113,7 +113,7 @@ const transposeHalfStepUp = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const transposeHalfStepDown = vscode.commands.registerCommand(
+export const transposeHalfStepDown = vscode.commands.registerCommand(
   "abcjs-vscode.transposeHalfStepDown",
   () => {
     let newText = noteDispatcher({
@@ -124,7 +124,7 @@ const transposeHalfStepDown = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const transposeOctDown = vscode.commands.registerCommand(
+export const transposeOctDown = vscode.commands.registerCommand(
   "abcjs-vscode.transposeOctDown",
   () => {
     let newText = noteDispatcher({
@@ -135,7 +135,7 @@ const transposeOctDown = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const transposeStepUp = vscode.commands.registerCommand(
+export const transposeStepUp = vscode.commands.registerCommand(
   "abcjs-vscode.transposeStepUp",
   () => {
     let newText = noteDispatcher({
@@ -147,7 +147,7 @@ const transposeStepUp = vscode.commands.registerCommand(
   }
 );
 
-const scoreFormatter = vscode.commands.registerCommand(
+export const scoreFormatter = vscode.commands.registerCommand(
   "abcjs-vscode.scoreFormatter",
   () => {
     const text = selectionContent();
@@ -155,7 +155,7 @@ const scoreFormatter = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const transposeStepDown = vscode.commands.registerCommand(
+export const transposeStepDown = vscode.commands.registerCommand(
   "abcjs-vscode.transposeStepDown",
   () => {
     let newText = noteDispatcher({
@@ -166,7 +166,7 @@ const transposeStepDown = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const transposeOctUp = vscode.commands.registerCommand(
+export const transposeOctUp = vscode.commands.registerCommand(
   "abcjs-vscode.transposeOctUp",
   () => {
     let newText = noteDispatcher({
@@ -177,7 +177,7 @@ const transposeOctUp = vscode.commands.registerCommand(
     makeReplacement(newText);
   }
 );
-const reorderChordNotes = vscode.commands.registerCommand(
+export const reorderChordNotes = vscode.commands.registerCommand(
   "abcjs-vscode.reorderChordTransformNotes",
   () => {
     // @ts-ignore
@@ -186,7 +186,7 @@ const reorderChordNotes = vscode.commands.registerCommand(
   }
 );
 
-const createInstrumentsFile = vscode.commands.registerCommand(
+export const createInstrumentsFile = vscode.commands.registerCommand(
   "abcjs-vscode.createInstrumentsFile",
   async () => {
     const documentText = vscode.window.activeTextEditor.document.getText();
@@ -205,20 +205,3 @@ const createInstrumentsFile = vscode.commands.registerCommand(
     vscode.window.showTextDocument(newURI);
   }
 );
-
-module.exports = {
-  consolidateConsecutiveNotes,
-  convertToEnharmonia,
-  convertToRest,
-  divideLength,
-  duplicateLength,
-  transposeHalfStepDown,
-  transposeHalfStepUp,
-  transposeOctDown,
-  transposeOctUp,
-  transposeStepDown,
-  transposeStepUp,
-  reorderChordNotes,
-  createInstrumentsFile,
-  scoreFormatter,
-};

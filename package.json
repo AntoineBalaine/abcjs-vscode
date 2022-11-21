@@ -1,8 +1,8 @@
 {
   "name": "abcjs-vscode",
   "displayName": "abcjs vscode",
-  "description": "Abc music notation editor, using abcjs",
-  "version": "1.3.1",
+  "description": "ABC music notation editor, using abcjs library",
+  "version": "2.5.0",
   "publisher": "alensiljak",
   "author": {
     "name": "Alen Šiljak"
@@ -11,17 +11,15 @@
   "icon": "res/icon128.png",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/alensiljak/abcjs-vscode.git"
+    "url": "https://github.com/abcjs-music/abcjs-vscode"
   },
   "engines": {
-    "vscode": "^1.65.0"
+    "vscode": "^1.39.0"
   },
   "categories": [
     "Other"
   ],
   "activationEvents": [
-    "onCommand:abcjs-vscode.helloWorld",
-    "onCommand:abcjs-vscode.showPreview",
     "onCommand:abcjs-vscode.consolidateConsecutiveNotes",
     "onCommand:abcjs-vscode.convertToEnharmonia",
     "onCommand:abcjs-vscode.convertToRest",
@@ -30,9 +28,13 @@
     "onCommand:abcjs-vscode.transposeHalfStepDown",
     "onCommand:abcjs-vscode.transposeHalfStepUp",
     "onCommand:abcjs-vscode.transposeOctDown",
-    "onCommand:abcjs-vscode.transposeOctUp"
+    "onCommand:abcjs-vscode.transposeOctUp",
+    "onCommand:abcjs-vscode.showPreview",
+    "onCommand:abcjs-vscode.exportHtml",
+    "onCommand:abcjs-vscode.exportSvg",
+    "onCommand:abcjs-vscode.printPreview"
   ],
-  "main": "./extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
@@ -94,6 +96,18 @@
       {
         "command": "abcjs-vscode.scoreFormatter",
         "title": "abcjs-edit: scoreFormatter"
+      },
+      {
+        "command": "abcjs-vscode.exportHtml",
+        "title": "abcjs-vscode: Export Sheet to HTML"
+      },
+      {
+        "command": "abcjs-vscode.exportSvg",
+        "title": "abcjs-vscode: Export Sheet as SVG"
+      },
+      {
+        "command": "abcjs-vscode.printPreview",
+        "title": "abcjs-vscode: Print Preview"
       }
     ],
     "languages": [
@@ -119,28 +133,110 @@
         "language": "abc",
         "path": "./snippets.json"
       }
+    ],
+    "configuration": [
+      {
+        "title": "Page Formatting",
+        "properties": {
+          "abcjs-vscode.pageFormatting.responsive": {
+            "type": "string",
+            "default": "resize",
+            "enum": [
+              "",
+              "resize"
+            ],
+            "scope": "resource",
+            "markdownDescription": "Use all the available width for the score. [Documentation](https://paulrosen.github.io/abcjs/visual/render-abc-options.html#responsive)"
+          },
+          "abcjs-vscode.pageFormatting.print": {
+            "type": "boolean",
+            "default": false,
+            "scope": "resource",
+            "description": "Apply print formatting"
+          },
+          "abcjs-vscode.pageFormatting.oneSvgPerLine": {
+            "type": "boolean",
+            "default": false,
+            "scope": "resource",
+            "markdownDescription": "Render each stave system as a separate SVG. Helps with page breaks. [Documentation](https://paulrosen.github.io/abcjs/visual/render-abc-options.html#onesvgperline)"
+          }
+        }
+      },
+      {
+        "title": "Sheet",
+        "properties": {
+          "abcjs-vscode.sheet.jazzchords": {
+            "type": "boolean",
+            "default": true,
+            "scope": "resource",
+            "markdownDescription": "Jazz style chord symbols formatting. [Documentation](https://paulrosen.github.io/abcjs/visual/render-abc-options.html#jazzchords)"
+          },
+          "abcjs-vscode.sheet.showDebug": {
+            "type": "boolean",
+            "default": false,
+            "scope": "resource",
+            "description": "Debug options for abcjs."
+          },
+          "abcjs-vscode.sheet.tablature": {
+            "type": "string",
+            "default": "",
+            "enum": [
+              "",
+              "Violin",
+              "Guitar"
+            ],
+            "markdownDescription": "Display a tablature-style staff. [Documentation](https://paulrosen.github.io/abcjs/visual/render-abc-options.html#tablatures)"
+          }
+        }
+      },
+      {
+        "title": "Transposition",
+        "properties": {
+          "abcjs-vscode.transposition.visualTranspose": {
+            "type": "integer",
+            "default": 0,
+            "minimum": -12,
+            "maximum": 12,
+            "description": "Tune transposition (in half-steps)"
+          },
+          "abcjs-vscode.transposition.showTransposedSource": {
+            "type": "boolean",
+            "default": false,
+            "description": "Show transposed ABC source code"
+          }
+        }
+      }
     ]
   },
   "scripts": {
-    "x-vscode:prepublish": "npm run esbuild-base -- --minify",
+    "deprecated: vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
     "esbuild-base": "npx esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "test-compile": "tsc -p ./",
     "build": "npm run esbuild",
-    "lint": "eslint .",
-    "pretest": "pnpm run lint",
-    "publish": "npx vsce publish",
-    "test": "node ./test/runTest.js"
+    "deploy": "npx vsce publish"
   },
   "devDependencies": {
-    "@types/glob": "7.2.0",
-    "@types/mocha": "9.1.1",
-    "@types/node": "18.7.16",
-    "@types/vscode": "1.65.0",
-    "@vscode/test-electron": "2.1.5",
-    "eslint": "8.23.0",
-    "glob": "7.2.0",
-    "mocha": "9.2.2",
-    "typescript": "4.8.2"
+    "@types/glob": "8.0.0",
+    "@types/mocha": "10.0.0",
+    "@types/node": "16.0.0",
+    "@types/vscode": "1.39.0",
+    "@typescript-eslint/eslint-plugin": "5.43.0",
+    "@typescript-eslint/parser": "5.43.0",
+    "@vscode/test-electron": "2.2.0",
+    "esbuild": "0.15.14",
+    "eslint": "8.27.0",
+    "glob": "8.0.3",
+    "mocha": "10.1.0",
+    "typescript": "4.8.4",
+    "vsce": "2.14.0"
   },
   "dependencies": {
     "abc-editing-macros": "github:AntoineBalaine/abc-editing-macros",
