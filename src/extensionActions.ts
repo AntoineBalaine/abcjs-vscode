@@ -1,7 +1,6 @@
 const vscode = require("vscode");
 import {
   consolidateConsecutiveNotesTransform,
-  consolidateRestsInRoutine,
   convertToEnharmoniaTransform,
   convertToRestTransform,
   createInstrumentationRoutine,
