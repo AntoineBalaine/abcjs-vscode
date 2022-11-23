@@ -1,46 +1,41 @@
 {
   "scopeName": "source.abc",
   "patterns": [
-    { "include": "#ties" },
-    { "include": "#instructions" },
-    { "include": "#comments" },
-    { "include": "#voice" },
-    { "include": "#annotations" },
-    { "include": "#information" },
-    { "include": "#bar" },
-    { "include": "#chords" },
-    { "include": "#symbols" },
     { "include": "#accidentalsAndOctaves" },
-    { "include": "#referencenumber" },
-    { "include": "#title" },
-    { "include": "#key" },
-    { "include": "#meter" },
-    { "include": "#length" },
-    { "include": "#tempo" },
+    { "include": "#annotations" },
+    { "include": "#bar" },
+    { "include": "#comments" },
     { "include": "#composer" },
-    { "include": "#rhythm" },
-    { "include": "#origin" },
+    { "include": "#instructions" },
+    { "include": "#key" },
+    { "include": "#length" },
+    { "include": "#meter" },
+    { "include": "#note-rhythm" },
     { "include": "#notes" },
+    { "include": "#origin" },
+    { "include": "#ornaments" },
     { "include": "#part" },
     { "include": "#redefine" },
+    { "include": "#referencenumber" },
+    { "include": "#rhythm" },
     { "include": "#rhythm" },
     { "include": "#source" },
-    { "include": "#instructions" },
-    { "include": "#comments" },
+    { "include": "#symbols" },
+    { "include": "#tempo" },
+    { "include": "#ties" },
+    { "include": "#title" },
+    { "include": "#voice" },
     { "include": "#voice-section" },
-    { "include": "#chords" },
-    { "include": "#words" },
-    { "include": "#bar" },
-    { "include": "#ornaments" }
+    { "include": "#words" }
   ],
   "repository": {
-    "title": {
+    "composer": {
       "patterns": [
         {
-          "match": "^(T:)(.*)",
+          "match": "^(C:)(.*)",
           "captures": {
-            "1": { "name": "keyword.other.title.abc" },
-            "2": { "name": "string.value.title.abc" }
+            "1": { "name": "keyword.other.composer.abc" },
+            "2": { "name": "string.value.composer.abc" }
           }
         }
       ]
@@ -56,17 +51,6 @@
         }
       ]
     },
-    "meter": {
-      "patterns": [
-        {
-          "match": "^(M:)(.*)",
-          "captures": {
-            "1": { "name": "keyword.other.meter.abc" },
-            "2": { "name": "string.value.meter.abc" }
-          }
-        }
-      ]
-    },
     "length": {
       "patterns": [
         {
@@ -78,13 +62,20 @@
         }
       ]
     },
-    "part": {
+    "meter": {
       "patterns": [
         {
-          "match": "^(P:)(.*)",
+          "match": "^(M:)(.*)",
           "captures": {
-            "1": { "name": "markup.underline.other.part.abc" },
-            "2": { "name": "markup.underline.other.part.abc" }
+            "1": { "name": "keyword.other.meter.abc" },
+            "2": { "name": "string.value.meter.abc" }
+          }
+        },
+        {
+          "match": "(\\[M:)(.*?)\\]",
+          "captures": {
+            "1": { "name": "keyword.other.meter.abc" },
+            "2": { "name": "string.value.meter.abc" }
           }
         }
       ]
@@ -100,24 +91,24 @@
         }
       ]
     },
-    "redefine": {
+    "origin": {
       "patterns": [
         {
-          "match": "^(U:)(.*)",
+          "match": "^(O:)(.*)",
           "captures": {
-            "1": { "name": "keyword.other.redefine.abc" },
-            "2": { "name": "string.value.redefine.abc" }
+            "1": { "name": "keyword.other.origin.abc" },
+            "2": { "name": "string.value.origin.abc" }
           }
         }
       ]
     },
-    "source": {
+    "part": {
       "patterns": [
         {
-          "match": "^(S:)(.*)",
+          "match": "^(P:)(.*)",
           "captures": {
-            "1": { "name": "keyword.other.source.abc" },
-            "2": { "name": "string.value.source.abc" }
+            "1": { "name": "keyword.other.part.abc" },
+            "2": { "name": "markup.bold.other.part.abc" }
           }
         }
       ]
@@ -133,6 +124,50 @@
         }
       ]
     },
+    "rhythm": {
+      "patterns": [
+        {
+          "match": "^(R:)(.*)",
+          "captures": {
+            "1": { "name": "keyword.other.rhythm.abc" },
+            "2": { "name": "string.value.rhythm.abc" }
+          }
+        }
+      ]
+    },
+    "source": {
+      "patterns": [
+        {
+          "match": "^(S:)(.*)",
+          "captures": {
+            "1": { "name": "keyword.other.source.abc" },
+            "2": { "name": "string.value.source.abc" }
+          }
+        }
+      ]
+    },
+    "title": {
+      "patterns": [
+        {
+          "match": "^(T:)(.*)",
+          "captures": {
+            "1": { "name": "keyword.other.title.abc" },
+            "2": { "name": "string.value.title.abc" }
+          }
+        }
+      ]
+    },
+    "redefine": {
+      "patterns": [
+        {
+          "match": "^(U:)(.*)",
+          "captures": {
+            "1": { "name": "keyword.other.redefine.abc" },
+            "2": { "name": "string.value.redefine.abc" }
+          }
+        }
+      ]
+    },
     "referencenumber": {
       "patterns": [
         {
@@ -144,24 +179,13 @@
         }
       ]
     },
-    "composer": {
+    "transcription": {
       "patterns": [
         {
-          "match": "^(C:)(.*)",
+          "match": "^(Z:)(.*)",
           "captures": {
-            "1": { "name": "keyword.other.composer.abc" },
-            "2": { "name": "string.value.composer.abc" }
-          }
-        }
-      ]
-    },
-    "origin": {
-      "patterns": [
-        {
-          "match": "^(O:)(.*)",
-          "captures": {
-            "1": { "name": "keyword.other.origin.abc" },
-            "2": { "name": "string.value.origin.abc" }
+            "1": { "name": "keyword.other.transcription.abc" },
+            "2": { "name": "string.value.transcription.abc" }
           }
         }
       ]
@@ -170,7 +194,7 @@
       "patterns": [
         {
           "match": "^%%.*",
-          "name": "comment"
+          "name": "keyword.other.instruction.abc"
         }
       ]
     },
@@ -185,9 +209,23 @@
     "comments": {
       "patterns": [
         {
-          "match": "^%.*",
+          "match": "%[^%].*",
           "name": "comment.line.abc"
         }
+      ]
+    },
+    "voice-section": {
+      "name": "abc.section.voice",
+      "begin": "^(V:\\d)(.*)",
+      "beginCaptures": {
+        "0": { "name": "keyword.other.region.voice.abc" }
+      },
+      "while": "(?# include lines until one contains 'V:')^(?!V:\\d|X:)",
+      "patterns": [
+        { "include": "#annotations" },
+        { "include": "#words" },
+        { "include": "#bar" },
+        { "include": "#ornaments" }
       ]
     },
     "accidentalsAndOctaves": {
@@ -195,14 +233,6 @@
         {
           "match": "[\\^_=,']",
           "name": "string"
-        }
-      ]
-    },
-    "chords": {
-      "patterns": [
-        {
-          "match": "\"([^\".]*)\"",
-          "name": "entity.name.type.other.chords.abc"
         }
       ]
     },
@@ -250,15 +280,27 @@
         }
       ]
     },
+    "chord": {
+      "patterns": [
+        {
+          "match": "\\[",
+          "name": "string"
+        },
+        {
+          "match": "\\]",
+          "name": "string"
+        }
+      ]
+    },
     "voice": {
       "patterns": [
         {
-          "match": "^\\[V:.\\]",
+          "match": "^\\[V:[^\\]]*\\]",
           "name": "comment"
         }
       ]
     },
-    "rhythm": {
+    "note-rhythm": {
       "patterns": [
         {
           "match": "[><]",
